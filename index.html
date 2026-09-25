@@ -405,6 +405,52 @@
     footer .to-top { display: inline-block; margin-top: 14px; color: var(--cyan); text-decoration: none; border: 1px solid rgba(34,211,238,.4); border-radius: 999px; padding: 9px 22px; font-size: 11px; transition: all 0.3s; }
     footer .to-top:hover { background: rgba(34,211,238,.12); box-shadow: 0 0 24px rgba(34,211,238,.3); }
 
+    /* ---------- playground ---------- */
+    .play-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 20px; }
+    .game-hud { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-bottom: 16px; font-family: var(--mono-font); font-size: 13px; color: var(--muted); }
+    .game-hud b { color: #fff; font-size: 1.25rem; margin-left: 6px; text-shadow: 0 0 14px rgba(34,211,238,.6); }
+    .btn.small { padding: 10px 22px; font-size: 11px; margin-left: auto; }
+    .game-arena {
+      position: relative; height: 340px; border-radius: 18px; overflow: hidden;
+      background: radial-gradient(circle at 50% 120%, rgba(34,211,238,.10), transparent 60%), rgba(2,5,18,.66);
+      border: 1px solid rgba(148,197,255,.18);
+      cursor: crosshair;
+    }
+    .game-overlay {
+      position: absolute; inset: 0; z-index: 3; display: grid; place-items: center; text-align: center;
+      padding: 20px; color: var(--muted); font-size: 0.95rem; line-height: 1.7;
+      background: rgba(2,5,18,.55); backdrop-filter: blur(2px);
+      transition: opacity 0.4s ease, visibility 0.4s;
+    }
+    .game-overlay.hidden { opacity: 0; visibility: hidden; }
+    .game-overlay b { color: #fff; font-size: 1.4rem; display: block; margin-bottom: 6px; }
+    .comet-target {
+      position: absolute; width: 44px; height: 44px; border-radius: 50%; z-index: 2;
+      background: radial-gradient(circle at 35% 35%, #fff 0%, var(--cyan) 38%, transparent 72%);
+      box-shadow: 0 0 22px var(--cyan), 0 0 60px rgba(34,211,238,.4);
+      animation: targetLife 1.5s ease-out forwards;
+      cursor: crosshair;
+    }
+    .comet-target.pink { background: radial-gradient(circle at 35% 35%, #fff 0%, var(--magenta) 38%, transparent 72%); box-shadow: 0 0 22px var(--magenta), 0 0 60px rgba(244,114,182,.4); }
+    .comet-target.gold { background: radial-gradient(circle at 35% 35%, #fff 0%, var(--gold) 38%, transparent 72%); box-shadow: 0 0 22px var(--gold), 0 0 60px rgba(255,209,102,.4); }
+    @keyframes targetLife { 0% { transform: scale(0); opacity: 0; } 15% { transform: scale(1.15); opacity: 1; } 80% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.2); opacity: 0; } }
+    .game-hint { margin: 14px 0 0; font-size: 0.82rem; color: var(--faint); }
+    .fun-fact { min-height: 88px; font-size: 1.02rem; line-height: 1.7; color: var(--muted); margin: 16px 0 22px; }
+    .fun-fact b { color: var(--gold); }
+    .secret-hint { font-family: var(--mono-font); font-size: 12.5px; color: var(--faint); line-height: 2; margin: 14px 0 0; }
+    .secret-hint kbd { border: 1px solid var(--edge); border-radius: 6px; padding: 2px 8px; color: var(--cyan); background: rgba(34,211,238,.07); }
+
+    /* ---------- party mode + confetti + sparks ---------- */
+    body.party { animation: partyHue 2.4s linear infinite; }
+    @keyframes partyHue { to { filter: hue-rotate(360deg); } }
+    .confetti { position: fixed; top: -20px; z-index: 250; width: 10px; height: 15px; border-radius: 2px; pointer-events: none; animation: confettiFall linear forwards; }
+    @keyframes confettiFall { to { transform: translateY(110vh) rotate(720deg); opacity: 0.9; } }
+    .click-spark { position: fixed; z-index: 240; width: 7px; height: 7px; border-radius: 50%; pointer-events: none; background: radial-gradient(circle, #fff, var(--cyan) 60%, transparent 75%); animation: sparkFly 0.7s ease-out forwards; }
+    @keyframes sparkFly { from { transform: translate(-50%,-50%) scale(1); opacity: 1; } to { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.1); opacity: 0; } }
+    .trail-layer { position: fixed; inset: 0; z-index: 58; pointer-events: none; overflow: hidden; }
+    .trail-bit { position: absolute; border-radius: 50%; background: radial-gradient(circle, #fff, var(--violet) 55%, transparent 75%); animation: trailFade 0.7s ease-out forwards; }
+    @keyframes trailFade { from { transform: translate(-50%,-50%) scale(1); opacity: 0.9; } to { transform: translate(-50%,-60px) scale(0.05); opacity: 0; } }
+
     @media (max-width: 960px) {
       .hero-grid { grid-template-columns: 1fr; }
       .portrait-wrap { order: -1; min-height: 300px; }
@@ -448,6 +494,7 @@
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
       <a href="#services">Services</a>
+      <a href="#playground">Playground</a>
       <a href="#contact">Contact</a>
     </div>
     <button class="burger" id="burger" aria-label="Toggle menu">☰</button>
@@ -605,10 +652,43 @@
       </div>
     </section>
 
+    <!-- PLAYGROUND -->
+    <section id="playground" aria-label="Playground">
+      <div class="reveal"><span class="eyebrow">04 · Playground</span>
+        <h2 class="sec-title">Don&rsquo;t just scroll.<br />Come play.</h2>
+        <p class="sec-sub">A portfolio should be touched. Catch comets against the clock, grab a random dev fact, and hunt the hidden party code.</p>
+      </div>
+      <div class="play-grid">
+        <div class="glass reveal">
+          <div class="game-hud">
+            <span>Score<b id="gameScore">0</b></span>
+            <span>Best<b id="gameBest">0</b></span>
+            <span>Time<b id="gameTime">30</b>s</span>
+            <button class="btn small magnetic" id="gameStart" type="button">Start Game</button>
+          </div>
+          <div class="game-arena" id="gameArena">
+            <div class="game-overlay" id="gameOverlay"><div><b>Catch the Comet</b>Glowing comets appear for a blink — tap as many as you can in 30 seconds.</div></div>
+          </div>
+          <p class="game-hint">Tip: pink comets are quick. Gold ones are worth double.</p>
+        </div>
+        <div style="display:grid;gap:20px;align-content:start">
+          <div class="glass reveal d1">
+            <span class="eyebrow">Surprise me</span>
+            <p class="fun-fact" id="funFact">Press the button for a random dose of developer trivia.</p>
+            <button class="btn small magnetic" id="factBtn" type="button">New Fact</button>
+          </div>
+          <div class="glass reveal d2">
+            <span class="eyebrow">Rumor mill</span>
+            <p class="secret-hint">Legend says typing<br /><kbd>↑</kbd> <kbd>↑</kbd> <kbd>↓</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> <kbd>←</kbd> <kbd>→</kbd> <kbd>B</kbd> <kbd>A</kbd><br />anywhere on this page starts the party.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- CONTACT -->
     <section id="contact" aria-label="Contact">
       <div class="glass contact-card reveal">
-        <span class="eyebrow" style="justify-content:center">04 · Contact</span>
+        <span class="eyebrow" style="justify-content:center">05 · Contact</span>
         <h2>Let&rsquo;s build something luminous.</h2>
         <p>Have an idea, a role, or a wild interface in mind? My inbox is open — I usually reply within a day.</p>
         <div class="contact-methods">
@@ -622,9 +702,11 @@
 
   <footer>
     © <span id="year">2026</span> Vishwas Saini · Crafted with light and logic<br />
+    <span style="color:var(--faint)">Your local time · <span id="localTime" style="color:var(--cyan);font-family:var(--mono-font)">--:--:--</span></span><br />
     <a class="to-top" href="#home">↑ Back to top</a>
   </footer>
 
+  <div class="trail-layer" id="trailLayer" aria-hidden="true"></div>
   <div class="toast" id="toast" role="status" aria-live="polite">Discord username copied</div>
 
   <script>
@@ -763,7 +845,7 @@
     /* ---------- scroll progress + active nav ---------- */
     const progress = document.getElementById('progress');
     const navAnchors = Array.from(document.querySelectorAll('.nav-links a'));
-    const sections = ['home', 'about', 'skills', 'services', 'contact'].map((id) => document.getElementById(id));
+    const sections = ['home', 'about', 'skills', 'services', 'playground', 'contact'].map((id) => document.getElementById(id));
     function onScroll() {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       progress.style.transform = 'scaleX(' + (max > 0 ? window.scrollY / max : 0) + ')';
@@ -834,6 +916,180 @@
       window.clearTimeout(toastTimer);
       toastTimer = window.setTimeout(() => toast.classList.remove('show'), 2200);
     });
+
+    /* ---------- global click sparkles ---------- */
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('#gameArena')) return;
+      for (let i = 0; i < 7; i++) {
+        const s = document.createElement('span');
+        s.className = 'click-spark';
+        const angle = Math.random() * Math.PI * 2, dist = 26 + Math.random() * 60;
+        s.style.left = e.clientX + 'px';
+        s.style.top = e.clientY + 'px';
+        s.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+        s.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+        document.body.appendChild(s);
+        s.addEventListener('animationend', () => s.remove(), { once: true });
+      }
+    });
+
+    /* ---------- cursor sparkle trail ---------- */
+    const trailLayer = document.getElementById('trailLayer');
+    let lastTrail = 0;
+    if (finePointer) {
+      window.addEventListener('pointermove', (e) => {
+        const now = performance.now();
+        if (now - lastTrail < 55) return;
+        lastTrail = now;
+        const t = document.createElement('span');
+        const size = 4 + Math.random() * 7;
+        t.className = 'trail-bit';
+        t.style.left = e.clientX + 'px';
+        t.style.top = e.clientY + 'px';
+        t.style.width = size + 'px';
+        t.style.height = size + 'px';
+        trailLayer.appendChild(t);
+        t.addEventListener('animationend', () => t.remove(), { once: true });
+      }, { passive: true });
+    }
+
+    /* ---------- konami party mode + confetti ---------- */
+    const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    let konamiPos = 0, partyTimer = null;
+    function confettiStorm() {
+      const colors = ['#22d3ee','#a78bfa','#f472b6','#ffd166','#bef264','#ffffff'];
+      for (let i = 0; i < 90; i++) {
+        const c = document.createElement('span');
+        c.className = 'confetti';
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.background = colors[i % colors.length];
+        c.style.animationDuration = (2.2 + Math.random() * 2.4) + 's';
+        c.style.animationDelay = (Math.random() * 0.9) + 's';
+        c.style.width = (6 + Math.random() * 8) + 'px';
+        c.style.height = (10 + Math.random() * 10) + 'px';
+        document.body.appendChild(c);
+        window.setTimeout(() => c.remove(), 5200);
+      }
+    }
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+    document.addEventListener('keydown', (e) => {
+      const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      konamiPos = (key === KONAMI[konamiPos]) ? konamiPos + 1 : (key === KONAMI[0] ? 1 : 0);
+      if (konamiPos === KONAMI.length) {
+        konamiPos = 0;
+        document.body.classList.add('party');
+        confettiStorm();
+        showToast('PARTY MODE ENGAGED — you found the secret code');
+        window.clearTimeout(partyTimer);
+        partyTimer = window.setTimeout(() => document.body.classList.remove('party'), 12000);
+      }
+    });
+
+    /* ---------- catch-the-comet mini game ---------- */
+    const arena = document.getElementById('gameArena');
+    const overlay = document.getElementById('gameOverlay');
+    const scoreEl = document.getElementById('gameScore');
+    const bestEl = document.getElementById('gameBest');
+    const timeEl = document.getElementById('gameTime');
+    const startBtn = document.getElementById('gameStart');
+    let gameScore = 0, gameTime = 30, spawnTimer = null, clockTimer = null, gameLive = false;
+    try { bestEl.textContent = window.localStorage.getItem('vs-comet-best') || '0'; } catch (err) { bestEl.textContent = '0'; }
+    function spawnTarget() {
+      if (!gameLive) return;
+      const live = arena.querySelectorAll('.comet-target').length;
+      if (live >= 4) return;
+      const t = document.createElement('div');
+      const roll = Math.random();
+      t.className = 'comet-target' + (roll > 0.86 ? ' gold' : roll > 0.55 ? ' pink' : '');
+      const value = t.classList.contains('gold') ? 2 : 1;
+      const pad = 52;
+      t.style.left = Math.random() * (arena.clientWidth - pad) + 'px';
+      t.style.top = Math.random() * (arena.clientHeight - pad) + 'px';
+      t.addEventListener('pointerdown', (e) => {
+        e.stopPropagation();
+        if (!gameLive) return;
+        gameScore += value;
+        scoreEl.textContent = gameScore;
+        const r = arena.getBoundingClientRect();
+        for (let i = 0; i < 8; i++) {
+          const s = document.createElement('span');
+          s.className = 'click-spark';
+          const angle = Math.random() * Math.PI * 2, dist = 20 + Math.random() * 46;
+          s.style.left = (e.clientX) + 'px';
+          s.style.top = (e.clientY) + 'px';
+          s.style.position = 'fixed';
+          s.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+          s.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+          document.body.appendChild(s);
+          s.addEventListener('animationend', () => s.remove(), { once: true });
+        }
+        t.remove();
+      });
+      arena.appendChild(t);
+      window.setTimeout(() => t.remove(), 1500);
+    }
+    function endGame() {
+      gameLive = false;
+      window.clearInterval(spawnTimer);
+      window.clearInterval(clockTimer);
+      arena.querySelectorAll('.comet-target').forEach((t) => t.remove());
+      const prevBest = parseInt(bestEl.textContent, 10) || 0;
+      const isRecord = gameScore > prevBest;
+      if (isRecord) {
+        bestEl.textContent = gameScore;
+        try { window.localStorage.setItem('vs-comet-best', String(gameScore)); } catch (err) {}
+      }
+      overlay.innerHTML = '<div><b>' + (isRecord ? 'NEW RECORD!' : "Time's up!") + '</b>You caught ' + gameScore + ' point' + (gameScore === 1 ? '' : 's') + '.<br />Hit Start to play again.</div>';
+      overlay.classList.remove('hidden');
+      if (isRecord) confettiStorm();
+    }
+    startBtn.addEventListener('click', () => {
+      window.clearInterval(spawnTimer);
+      window.clearInterval(clockTimer);
+      arena.querySelectorAll('.comet-target').forEach((t) => t.remove());
+      gameScore = 0; gameTime = 30; gameLive = true;
+      scoreEl.textContent = '0'; timeEl.textContent = '30';
+      overlay.classList.add('hidden');
+      spawnTimer = window.setInterval(spawnTarget, 620);
+      spawnTarget(); spawnTarget();
+      clockTimer = window.setInterval(() => {
+        gameTime -= 1;
+        timeEl.textContent = gameTime;
+        if (gameTime <= 0) endGame();
+      }, 1000);
+    });
+
+    /* ---------- fun facts ---------- */
+    const FACTS = [
+      'The first computer bug was a <b>real moth</b> found inside Harvard\u2019s Mark II in 1947.',
+      'The first programmer in history was <b>Ada Lovelace</b> — in the 1840s, before computers existed.',
+      'JavaScript was created in just <b>10 days</b> in May 1995.',
+      'The word \u201crobot\u201d comes from the Czech word <b>robota</b>, meaning forced labor.',
+      'There are over <b>700</b> programming languages in existence.',
+      'The first domain ever registered was <b>symbolics.com</b> in 1985.',
+      'A single Google search once used enough energy to <b>boil a kettle</b> — data centers have come a long way.',
+      'The QWERTY layout was designed to <b>slow typists down</b> so typewriter keys wouldn\u2019t jam.'
+    ];
+    let lastFact = -1;
+    document.getElementById('factBtn').addEventListener('click', () => {
+      let i;
+      do { i = Math.floor(Math.random() * FACTS.length); } while (i === lastFact);
+      lastFact = i;
+      document.getElementById('funFact').innerHTML = FACTS[i];
+    });
+
+    /* ---------- footer clock ---------- */
+    const localTime = document.getElementById('localTime');
+    function updateLocalTime() {
+      localTime.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+    updateLocalTime();
+    window.setInterval(updateLocalTime, 1000);
 
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>

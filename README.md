@@ -22,7 +22,9 @@ V_S_Portfolio/
 - About with bio and contact info card
 - Skills bento grid: Languages, Backend & APIs, Auth & Messaging, AI Frontier
 - Services: Full-Stack Web Development, UI Animation, Windows Development
+- Playground: Catch-the-Comet mini-game, dev trivia button, Konami-code party mode
 - Contact: email, Instagram, Discord copy button
+- Global click sparkles, cursor sparkle trail and live footer clock
 
 ## Deploy with GitHub Pages
 
